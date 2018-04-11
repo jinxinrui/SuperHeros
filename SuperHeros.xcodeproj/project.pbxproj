@@ -15,6 +15,10 @@
 		AF41F6322058B7F700E30EF3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AF41F6302058B7F700E30EF3 /* LaunchScreen.storyboard */; };
 		AF41F63D2058B7F700E30EF3 /* SuperHerosTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF41F63C2058B7F700E30EF3 /* SuperHerosTests.swift */; };
 		AF41F6482058B7F700E30EF3 /* SuperHerosUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF41F6472058B7F700E30EF3 /* SuperHerosUITests.swift */; };
+		AFC3D18D2059355600A6334A /* CurrentTeamTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC3D18C2059355600A6334A /* CurrentTeamTableViewController.swift */; };
+		AFC3D18F2059358100A6334A /* AddSuperHeroTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC3D18E2059358100A6334A /* AddSuperHeroTableViewController.swift */; };
+		AFC3D191205935BB00A6334A /* SuperHeroTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC3D190205935BB00A6334A /* SuperHeroTableViewCell.swift */; };
+		AFC3D19320593C4600A6334A /* SuperHero.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC3D19220593C4600A6334A /* SuperHero.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +53,10 @@
 		AF41F6432058B7F700E30EF3 /* SuperHerosUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SuperHerosUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		AF41F6472058B7F700E30EF3 /* SuperHerosUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuperHerosUITests.swift; sourceTree = "<group>"; };
 		AF41F6492058B7F700E30EF3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AFC3D18C2059355600A6334A /* CurrentTeamTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentTeamTableViewController.swift; sourceTree = "<group>"; };
+		AFC3D18E2059358100A6334A /* AddSuperHeroTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSuperHeroTableViewController.swift; sourceTree = "<group>"; };
+		AFC3D190205935BB00A6334A /* SuperHeroTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuperHeroTableViewCell.swift; sourceTree = "<group>"; };
+		AFC3D19220593C4600A6334A /* SuperHero.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuperHero.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,10 +110,14 @@
 				AF41F6242058B7F700E30EF3 /* AppDelegate.swift */,
 				AF41F6262058B7F700E30EF3 /* ViewController.swift */,
 				AF41F6282058B7F700E30EF3 /* Main.storyboard */,
+				AFC3D19220593C4600A6334A /* SuperHero.swift */,
 				AF41F62E2058B7F700E30EF3 /* Assets.xcassets */,
 				AF41F6302058B7F700E30EF3 /* LaunchScreen.storyboard */,
 				AF41F6332058B7F700E30EF3 /* Info.plist */,
 				AF41F62B2058B7F700E30EF3 /* SuperHeros.xcdatamodeld */,
+				AFC3D18C2059355600A6334A /* CurrentTeamTableViewController.swift */,
+				AFC3D18E2059358100A6334A /* AddSuperHeroTableViewController.swift */,
+				AFC3D190205935BB00A6334A /* SuperHeroTableViewCell.swift */,
 			);
 			path = SuperHeros;
 			sourceTree = "<group>";
@@ -262,9 +274,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AFC3D19320593C4600A6334A /* SuperHero.swift in Sources */,
+				AFC3D18F2059358100A6334A /* AddSuperHeroTableViewController.swift in Sources */,
+				AFC3D18D2059355600A6334A /* CurrentTeamTableViewController.swift in Sources */,
 				AF41F6272058B7F700E30EF3 /* ViewController.swift in Sources */,
 				AF41F6252058B7F700E30EF3 /* AppDelegate.swift in Sources */,
 				AF41F62D2058B7F700E30EF3 /* SuperHeros.xcdatamodeld in Sources */,
+				AFC3D191205935BB00A6334A /* SuperHeroTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
