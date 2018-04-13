@@ -7,29 +7,81 @@
 //
 
 import UIKit
+import CoreData
 
 class CurrentTeamTableViewController: UITableViewController, AddSuperHeroProtocol {
+    
     private var superHeroList: [SuperHero] = []
+    private var currentTeam: Team?
+    private var managedObjectContext: NSManagedObjectContext
     
     private let SECTION_HEROS = 0
     private let SECTION_COUNT = 1
     
+    required init(coder aDecoder: NSCoder) {
+        let appDelegate = UIApplication.shared.delegate as? AppDelegate
+        managedObjectContext = (appDelegate?.persistentContainer.viewContext)!
+        super.init(coder: aDecoder)!
+    }
+    /*
     func initiliseSuperHeroList() {
         superHeroList.append(SuperHero(name: "Wonder Woman", abilities: "Strength, Speed, Longevity"))
         superHeroList.append(SuperHero(name: "Superman", abilities: "Flying, Strength, X-ray vision"))
         superHeroList.append(SuperHero(name: "Spider-Man", abilities: "Agility, Strength, Spider-sense"))
     }
+     */
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        initiliseSuperHeroList()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Team")
+        do {
+            let teams = try managedObjectContext.fetch(fetchRequest) as! [Team]
+            if teams.count == 0 {
+                currentTeam = NSEntityDescription.insertNewObject(forEntityName: "Team", into: managedObjectContext) as? Team
+                saveData()
+            }
+            else {
+                currentTeam = teams.first
+                superHeroList = currentTeam?.members?.allObjects as! [SuperHero]
+            }
+        }
+        catch {
+            fatalError("Failed to fetch teams: \(error)")
+        }
+    }
+    
+    func saveData() {
+        do {
+            try managedObjectContext.save()
+        }
+        catch let error {
+            print("Could not save Core Data: \(error)")
+        }
+    }
+    
+    func addSuperHero(superHero: SuperHero) -> Bool {
+        if superHero.team == currentTeam {
+            return false
+        }
+        
+        currentTeam?.addToMembers(superHero)
+        saveData()
+        
+        superHeroList.append(superHero)
+        
+        tableView.insertRows(at: [IndexPath(row: superHeroList.count - 1, section: 0)], with: .automatic)
+        
+        tableView.reloadSections([SECTION_COUNT], with: .automatic)
+        
+        return true
+    }
+    
+    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+        if indexPath.section == SECTION_HEROS {
+            return .delete
+        }
+        return .none
     }
 
     override func didReceiveMemoryWarning() {
@@ -92,17 +144,22 @@ class CurrentTeamTableViewController: UITableViewController, AddSuperHeroProtoco
     }
     */
 
-    /*
+    
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+            let deletedHero = superHeroList.remove(at: indexPath.row)
+            currentTeam?.removeFromMembers(deletedHero)
+            
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+            
+            tableView.reloadSections([SECTION_COUNT], with: .automatic)
+            
+            saveData()
+        }
     }
-    */
+    
 
     /*
     // Override to support rearranging the table view.

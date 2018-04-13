@@ -7,16 +7,24 @@
 //
 
 import UIKit
+import CoreData
 
 protocol AddSuperHeroProtocol {
-    func newSuperHero(superHero: SuperHero)
+    func addSuperHero(superHero: SuperHero) -> Bool
 }
 
 class AddSuperHeroTableViewController: UITableViewController {
-    var superHeroList: [SuperHero] = []
+    private var superHeroList: [SuperHero] = []
+    private var managedObjectContext: NSManagedObjectContext
     var addSuperHeroDelegate: AddSuperHeroProtocol?
     
+    required init(coder aDecoder: NSCoder) {
+        let appDelegate = UIApplication.shared.delegate as? AppDelegate
+        managedObjectContext = (appDelegate?.persistentContainer.viewContext)!
+        super.init(coder: aDecoder)!
+    }
     
+    /*
     func initialiseSuperHeroList() {
         superHeroList.append(SuperHero(name: "Aqua Man", abilities: "Breathe underwater, Fast swimmer"))
             superHeroList.append(SuperHero(name: "Human Torch", abilities: "Flaming body, flying"))
@@ -26,18 +34,78 @@ class AddSuperHeroTableViewController: UITableViewController {
             superHeroList.append(SuperHero(name: "Superman", abilities: "Flying, Strength, X-ray vision"))
             superHeroList.append(SuperHero(name: "Wonder Woman", abilities: "Strength, Speed, Longevity"))
             }
-
+     */
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // call initialiseSuperHeroList()
-        initialiseSuperHeroList()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "SuperHero")
+        do {
+            superHeroList = try managedObjectContext.fetch(fetchRequest) as! [SuperHero]
+            if superHeroList.count == 0 {
+                addSuperHeroData()
+                // load newly added data
+                superHeroList = try managedObjectContext.fetch(fetchRequest) as! [SuperHero]
+            }
+        }
+        catch {
+            fatalError("Failed to fetch super heroes: \(error)")
+        }
+    }
+    
+    func addSuperHeroData() {
+        var hero = NSEntityDescription.insertNewObject(forEntityName: "SupserHero", into: managedObjectContext) as! SuperHero
+        hero.name = "Aqua Man"
+        hero.abilities = "Breathe underwater, Fast swimmer"
+        
+        hero = NSEntityDescription.insertNewObject(forEntityName: "SuperHero", into: managedObjectContext) as! SuperHero
+        hero.name = "Human Torch"
+        hero.abilities = "Flaming body, flying"
+        
+        hero = NSEntityDescription.insertNewObject(forEntityName: "SuperHero", into: managedObjectContext) as! SuperHero
+        hero.name = "Invisible Woman"
+        hero.abilities = "Invisibility, force field"
+        
+        hero = NSEntityDescription.insertNewObject(forEntityName: "SuperHero", into: managedObjectContext)
+            as! SuperHero
+        hero.name = "Mister Fantastic"
+        hero.abilities = "Intelligence, Stretchy body"
+        hero = NSEntityDescription.insertNewObject(forEntityName: "SuperHero", into: managedObjectContext)
+            as! SuperHero
+        hero.name = "Spider-Man"
+        hero.abilities = "Agility, Strength, Spider-sense"
+        hero = NSEntityDescription.insertNewObject(forEntityName: "SuperHero", into: managedObjectContext)
+            as! SuperHero
+        hero.name = "Superman"
+        hero.abilities = "Flying, Strength, X-ray vision"
+        hero = NSEntityDescription.insertNewObject(forEntityName: "SuperHero", into: managedObjectContext)
+            as! SuperHero
+        hero.name = "Wonder Woman"
+        hero.abilities = "Strength, Speed, Longevity"
+        
+        do {
+            try managedObjectContext.save()
+        }
+        catch let error {
+            print("Could not save Core Data: \(error)")
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let superHero = superHeroList[indexPath.row]
+        let superHeroAdded = addSuperHeroDelegate?.addSuperHero(superHero: superHero)
+        if superHeroAdded != nil {
+            // If there is a delegate, respond to whether it added super hero.
+            if superHeroAdded == true {
+                navigationController?.popViewController(animated: true)
+            }
+            else {
+                tableView.deselectRow(at: indexPath, animated: true)
+                let alert = UIAlertController(title: "Hero already on Team", message: "\(superHero.name ?? "The super hero") is already on the team.", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Ok", style: .`default`, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -69,11 +137,7 @@ class AddSuperHeroTableViewController: UITableViewController {
         return cell
     }
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
-    {
-        addSuperHeroDelegate?.newSuperHero(superHero: superHeroList[indexPath.row])
-        navigationController?.popViewController(animated: true)
-    }
+    
 
     /*
     // Override to support conditional editing of the table view.
