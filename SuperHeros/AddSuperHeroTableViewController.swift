@@ -54,7 +54,7 @@ class AddSuperHeroTableViewController: UITableViewController {
     }
     
     func addSuperHeroData() {
-        var hero = NSEntityDescription.insertNewObject(forEntityName: "SupserHero", into: managedObjectContext) as! SuperHero
+        var hero = NSEntityDescription.insertNewObject(forEntityName: "SuperHero", into: managedObjectContext) as! SuperHero
         hero.name = "Aqua Man"
         hero.abilities = "Breathe underwater, Fast swimmer"
         
