@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 
 protocol AddSuperHeroProtocol {
-    func addSuperHero(superHero: SuperHero) -> Bool
+    func addSuperHero(_ superHero: SuperHero) -> Bool
 }
 
 class AddSuperHeroTableViewController: UITableViewController {
@@ -93,7 +93,7 @@ class AddSuperHeroTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let superHero = superHeroList[indexPath.row]
-        let superHeroAdded = addSuperHeroDelegate?.addSuperHero(superHero: superHero)
+        let superHeroAdded = addSuperHeroDelegate?.addSuperHero(superHero)
         if superHeroAdded != nil {
             // If there is a delegate, respond to whether it added super hero.
             if superHeroAdded == true {
@@ -101,6 +101,7 @@ class AddSuperHeroTableViewController: UITableViewController {
             }
             else {
                 tableView.deselectRow(at: indexPath, animated: true)
+                // "??" means superHero.name != nil ? superHero.name! : "The super hero"
                 let alert = UIAlertController(title: "Hero already on Team", message: "\(superHero.name ?? "The super hero") is already on the team.", preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "Ok", style: .`default`, handler: nil))
                 self.present(alert, animated: true, completion: nil)
@@ -120,10 +121,12 @@ class AddSuperHeroTableViewController: UITableViewController {
         return 1
     }
 
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         return superHeroList.count
     }
+ 
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

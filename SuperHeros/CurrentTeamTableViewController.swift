@@ -60,7 +60,11 @@ class CurrentTeamTableViewController: UITableViewController, AddSuperHeroProtoco
         }
     }
     
-    func addSuperHero(superHero: SuperHero) -> Bool {
+    /*
+     Estimate if the hero selected in AddSuperHeroTableViewController is already in the Team
+     and if not in the Team save the selcted data to the Team
+    */
+    func addSuperHero(_ superHero: SuperHero) -> Bool {
         if superHero.team == currentTeam {
             return false
         }
